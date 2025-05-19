@@ -4,7 +4,7 @@ class OnboardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color.fromARGB(255, 122, 46, 1),
+      backgroundColor: Colors.white,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -22,7 +22,7 @@ class OnboardingScreen extends StatelessWidget {
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 28,
-                    color: Colors.white,
+                    color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -30,12 +30,13 @@ class OnboardingScreen extends StatelessWidget {
                 Text(
                   'Using Knowledge to feed Africa.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.white70),
+                  style: TextStyle(color: const Color.fromARGB(179, 236, 4, 4)),
                 ),
                 SizedBox(height: 30),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Color(0xFFFFB54C),
+                    foregroundColor: Colors.white,
                     shape: StadiumBorder(),
                     padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   ),

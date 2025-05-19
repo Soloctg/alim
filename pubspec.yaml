@@ -54,6 +54,10 @@ flutter:
   assets:
     - assets/home.jpg
     - assets/alimudoLogo.png
+    - assets/tomato.png
+    - assets/soil.jpg
+    - assets/vegetable.png
+
 
 
   # The following line ensures that the Material Icons font is
