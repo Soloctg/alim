@@ -8,6 +8,8 @@ void main() {
 }
 
 class AlimApp extends StatelessWidget {
+  const AlimApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -30,6 +32,8 @@ class AlimApp extends StatelessWidget {
 }
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }

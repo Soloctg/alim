@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/product.dart';
 
 class DetailsScreen extends StatelessWidget {
+  const DetailsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Product product =

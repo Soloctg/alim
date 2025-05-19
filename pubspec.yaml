@@ -55,9 +55,11 @@ flutter:
     - assets/home.jpg
     - assets/alimudoLogo.png
     - assets/tomato.png
+    - assets/egg.png
     - assets/soil.jpg
     - assets/vegetable.png
-    - assets/egg.png
+    - assets/dragonFruit.jpg
+    
 
 
 
