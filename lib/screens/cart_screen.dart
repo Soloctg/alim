@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/material.dart';
 import '../models/cart_model.dart';
+import '../models/product.dart';
+import 'package:flutter/material.dart';
 
 class CartScreen extends StatelessWidget {
-  const CartScreen({Key? key}) : super(key: key);
+  const CartScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -11,13 +14,18 @@ class CartScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("My Cart"),
+        title: const Text("Your Cart"),
         backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
         foregroundColor: Colors.white,
       ),
       body:
           cart.items.isEmpty
-              ? const Center(child: Text("Your cart is empty"))
+              ? const Center(
+                child: Text(
+                  "Your cart is empty!",
+                  style: TextStyle(fontSize: 18),
+                ),
+              )
               : Column(
                 children: [
                   Expanded(
@@ -28,25 +36,40 @@ class CartScreen extends StatelessWidget {
                         return ListTile(
                           leading: Image.asset(item.image, width: 50),
                           title: Text(item.name),
-                          subtitle: Text('\$${item.price.toStringAsFixed(2)}'),
+                          subtitle: Text("\$${item.price.toStringAsFixed(2)}"),
                           trailing: IconButton(
-                            icon: const Icon(Icons.remove_circle),
-                            onPressed: () {
-                              cart.remove(item);
-                            },
+                            icon: const Icon(Icons.delete),
+                            onPressed: () => cart.remove(item),
                           ),
                         );
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
-                      style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
+                          style: const TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            // Implement checkout logic here
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text("Order placed!")),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.green,
+                          ),
+                          child: const Text("Checkout"),
+                        ),
+                      ],
                     ),
                   ),
                 ],

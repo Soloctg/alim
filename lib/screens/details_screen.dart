@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
+//import 'package:provider/provider.dart';
+//import '../models/cart_model.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key});
@@ -18,10 +20,15 @@ class DetailsScreen extends StatelessWidget {
         padding: EdgeInsets.all(16),
         child: Column(
           children: [
-            Image.asset(product.image, height: 200),
+            Image.asset(
+              product.image,
+              width: double.infinity,
+              height: 250,
+              fit: BoxFit.cover,
+            ),
             SizedBox(height: 20),
             Text(product.description, style: TextStyle(fontSize: 16)),
-            SizedBox(height: 20),
+
             Text(
               '\$${product.price.toString()}',
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),

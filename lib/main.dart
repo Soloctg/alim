@@ -1,3 +1,4 @@
+import 'package:alim/screens/cart_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:alim/screens/details_screen.dart';
 import 'package:alim/screens/home_screen.dart';
@@ -26,6 +27,7 @@ class AlimApp extends StatelessWidget {
         '/onboarding': (context) => OnboardingScreen(),
         '/home': (context) => HomeScreen(),
         '/details': (context) => DetailsScreen(),
+        '/cart': (context) => CartScreen(), // ✅ This must exist
       },
     );
   }
