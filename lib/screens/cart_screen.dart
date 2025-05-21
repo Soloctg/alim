@@ -20,7 +20,13 @@ class CartScreen extends StatelessWidget {
               ? const Center(
                 child: Text(
                   "Your cart is empty!",
-                  style: TextStyle(fontSize: 18),
+                  //style: TextStyle(fontSize: 18),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
                 ),
               )
               : Column(

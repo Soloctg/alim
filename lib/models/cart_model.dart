@@ -18,4 +18,13 @@ class CartModel extends ChangeNotifier {
     _items.remove(product);
     notifyListeners();
   }
+
+  void clear() {
+    _items.clear();
+    notifyListeners();
+  }
+
+  bool isEmpty() {
+    return _items.isEmpty;
+  }
 }
