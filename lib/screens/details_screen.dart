@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
-//import 'package:provider/provider.dart';
-//import '../models/cart_model.dart';
+import 'package:provider/provider.dart';
+import '../models/cart_model.dart';
 
 class DetailsScreen extends StatelessWidget {
   const DetailsScreen({super.key});
@@ -14,40 +14,61 @@ class DetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.name),
-        backgroundColor: Color(0xFF8A4E2F),
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Image.asset(
-              product.image,
-              width: double.infinity,
-              height: 250,
-              fit: BoxFit.cover,
-            ),
-            SizedBox(height: 20),
-            Text(product.description, style: TextStyle(fontSize: 16)),
+        backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+        foregroundColor: Colors.white,
 
-            Text(
-              '\$${product.price.toString()}',
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.shopping_cart),
+            color: Colors.white,
+            onPressed: () {
+              Navigator.pushNamed(context, '/cart');
+            },
+          ),
+        ],
+      ),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Image.asset(
+            product.image,
+            width: double.infinity,
+            height: 250,
+            fit: BoxFit.cover,
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  product.name,
+                  style: const TextStyle(
+                    fontSize: 22,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(product.description),
+                const SizedBox(height: 16),
+                Text(
+                  "\$${product.price.toStringAsFixed(2)}",
+                  style: const TextStyle(fontSize: 20),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Provider.of<CartModel>(context, listen: false).add(product);
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Added to cart")),
+                    );
+                  },
+                  child: const Text("Add to Cart"),
+                ),
+              ],
             ),
-            Spacer(),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/cart');
-              },
-              child: Text("Add to Cart"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xFFFFB54C),
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: StadiumBorder(),
-              ),
-            ),
-            SizedBox(height: 20),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
