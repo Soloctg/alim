@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter/material.dart';
 import '../models/cart_model.dart';
-import '../models/product.dart';
-import 'package:flutter/material.dart';
 
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
@@ -63,6 +60,7 @@ class CartScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("Order placed!")),
                             );
+                            //cart.clear(); // clear cart after checkout
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,

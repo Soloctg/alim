@@ -3,9 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:alim/screens/details_screen.dart';
 import 'package:alim/screens/home_screen.dart';
 import 'package:alim/screens/onboarding_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:alim/models/cart_model.dart';
 
 void main() {
-  runApp(AlimApp());
+  //runApp(AlimApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => CartModel(),
+      child: const AlimApp(),
+    ),
+  );
 }
 
 class AlimApp extends StatelessWidget {
