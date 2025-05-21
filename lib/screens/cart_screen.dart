@@ -33,7 +33,10 @@ class CartScreen extends StatelessWidget {
                         return ListTile(
                           leading: Image.asset(item.image, width: 50),
                           title: Text(item.name),
+                          textColor: Colors.white,
+
                           subtitle: Text("\$${item.price.toStringAsFixed(2)}"),
+                          iconColor: Colors.red,
                           trailing: IconButton(
                             icon: const Icon(Icons.delete),
                             onPressed: () => cart.remove(item),
@@ -51,6 +54,7 @@ class CartScreen extends StatelessWidget {
                           'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
                           style: const TextStyle(
                             fontSize: 18,
+                            color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -64,6 +68,11 @@ class CartScreen extends StatelessWidget {
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 20,
+                              vertical: 10,
+                            ),
                           ),
                           child: const Text("Checkout"),
                         ),
