@@ -16,17 +16,44 @@ class DetailsScreen extends StatelessWidget {
         title: Text(product.name),
         backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
         foregroundColor: Colors.white,
-
         actions: [
-          IconButton(
-            icon: const Icon(Icons.shopping_cart),
-            color: Colors.white,
-            onPressed: () {
-              Navigator.pushNamed(context, '/cart');
+          Consumer<CartModel>(
+            builder: (context, cart, child) {
+              return Stack(
+                alignment: Alignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.shopping_cart),
+                    onPressed: () {
+                      Navigator.pushNamed(context, '/cart');
+                    },
+                  ),
+                  if (cart.items.isNotEmpty)
+                    Positioned(
+                      right: 6,
+                      top: 6,
+                      child: Container(
+                        padding: const EdgeInsets.all(4),
+                        decoration: const BoxDecoration(
+                          color: Colors.red,
+                          shape: BoxShape.circle,
+                        ),
+                        child: Text(
+                          '${cart.items.length}',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 12,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              );
             },
           ),
         ],
       ),
+      backgroundColor: const Color(0xFF2E2E2E), // Optional: dark background
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -63,7 +90,6 @@ class DetailsScreen extends StatelessWidget {
                     color: Colors.white,
                   ),
                 ),
-
                 Text(
                   "\$${product.price.toStringAsFixed(2)}",
                   style: const TextStyle(fontSize: 20, color: Colors.white),
@@ -76,6 +102,9 @@ class DetailsScreen extends StatelessWidget {
                       const SnackBar(content: Text("Added to cart")),
                     );
                   },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.orange,
+                  ),
                   child: const Text("Add to Cart"),
                 ),
               ],
