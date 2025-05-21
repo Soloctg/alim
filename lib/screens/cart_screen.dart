@@ -70,7 +70,12 @@ class CartScreen extends StatelessWidget {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text("Order placed!")),
                             );
-                            //cart.clear(); // clear cart after checkout
+                            //cart.clear();
+                            // Clear the cart
+                            Provider.of<CartModel>(
+                              context,
+                              listen: false,
+                            ).clear(); // clear cart after checkout
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.green,
