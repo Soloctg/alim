@@ -45,7 +45,22 @@ class OnboardingScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/home');
                   },
+
                   child: Text('Get Started'),
+                ),
+                SizedBox(height: 20),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Color(0xFFFFB54C),
+                    foregroundColor: Colors.white,
+                    shape: StadiumBorder(),
+                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                  ),
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/register');
+                  },
+
+                  child: Text('Register'),
                 ),
               ],
             ),
