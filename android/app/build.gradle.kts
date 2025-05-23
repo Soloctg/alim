@@ -35,10 +35,22 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.getByName("debug")
+            
         }
     }
+
+    buildscript {
+        dependencies {
+            classpath 'com.google.gms:google-services:4.4.0' // Add this
+            implementation platform('com.google.firebase:firebase-bom:32.3.1')
+            implementation 'com.google.firebase:firebase-auth'
+        }
+    }
+
 }
 
 flutter {
     source = "../.."
 }
+
+apply plugin: 'com.google.gms.google-services' // Add this at the bottom

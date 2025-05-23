@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -14,80 +16,80 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final _phoneController = TextEditingController();
   final _addressController = TextEditingController();
 
-  void _register() {
+  Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
-      // TODO: Store user or send to API
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(const SnackBar(content: Text("Registration successful")));
-      Navigator.pushReplacementNamed(context, '/login');
-    }
-  }
+      try {
+        // Create user
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(
+              email: _emailController.text.trim(),
+              password: _passwordController.text.trim(),
+            );
 
-  InputDecoration _inputDecoration(String label) {
-    return InputDecoration(
-      labelText: label,
-      labelStyle: const TextStyle(color: Colors.white70),
-      enabledBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white38),
-      ),
-      focusedBorder: const UnderlineInputBorder(
-        borderSide: BorderSide(color: Colors.white),
-      ),
-    );
+        // Store additional user data in Firestore
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(userCredential.user!.uid)
+            .set({
+              'email': _emailController.text.trim(),
+              'phone': _phoneController.text.trim(),
+              'address': _addressController.text.trim(),
+              'createdAt': Timestamp.now(),
+            });
+
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Registration successful")),
+        );
+        Navigator.pushReplacementNamed(context, '/login');
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.brown[900],
-      appBar: AppBar(
-        title: const Text("Register"),
-        backgroundColor: Colors.brown[800],
-        foregroundColor: Colors.white,
-      ),
+      appBar: AppBar(title: const Text("Register")),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: ListView(
             children: [
-              Image.asset('assets/alimudoLogo.png', height: 120),
+              Image.asset('assets/alimudoLogo.png', height: 100),
               const SizedBox(height: 20),
               TextFormField(
                 controller: _emailController,
                 style: const TextStyle(color: Colors.white),
-                decoration: _inputDecoration("Email"),
+                decoration: const InputDecoration(labelText: "Email"),
                 validator: (value) => value!.isEmpty ? "Enter email" : null,
               ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _phoneController,
-                style: const TextStyle(color: Colors.white),
-                decoration: _inputDecoration("Phone Number"),
-                keyboardType: TextInputType.phone,
-                validator:
-                    (value) => value!.isEmpty ? "Enter phone number" : null,
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _addressController,
-                style: const TextStyle(color: Colors.white),
-                decoration: _inputDecoration("Delivery Address"),
-                validator:
-                    (value) => value!.isEmpty ? "Enter delivery address" : null,
-              ),
-              const SizedBox(height: 10),
               TextFormField(
                 controller: _passwordController,
                 obscureText: true,
                 style: const TextStyle(color: Colors.white),
-                decoration: _inputDecoration("Password"),
+                decoration: const InputDecoration(labelText: "Password"),
                 validator:
                     (value) =>
-                        value!.length < 6
-                            ? "Password must be at least 6 characters"
-                            : null,
+                        value!.length < 6 ? "Minimum 6 characters" : null,
+              ),
+              TextFormField(
+                controller: _phoneController,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(labelText: "Phone Number"),
+                validator:
+                    (value) => value!.isEmpty ? "Enter phone number" : null,
+              ),
+              TextFormField(
+                controller: _addressController,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: "Delivery Address",
+                ),
+                validator: (value) => value!.isEmpty ? "Enter address" : null,
               ),
               const SizedBox(height: 20),
               ElevatedButton(
@@ -98,7 +100,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 onPressed:
                     () => Navigator.pushReplacementNamed(context, '/login'),
                 child: const Text("Already have an account? Login"),
-                style: TextButton.styleFrom(foregroundColor: Colors.white70),
               ),
             ],
           ),

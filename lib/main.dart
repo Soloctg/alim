@@ -7,8 +7,9 @@ import 'package:alim/screens/home_screen.dart';
 import 'package:alim/screens/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:alim/models/cart_model.dart';
+//import 'firebase_options.dart'; // auto-generated
 
-void main() {
+void main() async {
   //runApp(AlimApp());
   runApp(
     ChangeNotifierProvider(

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "500903005311",
+    "project_id": "alimudofarm",
+    "storage_bucket": "alimudofarm.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500903005311:android:6cc3d4d66f6b27f41d434a",
+        "android_client_info": {
+          "package_name": "com.example.alim"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCfDJOXoRVnNmbw1aL07AtnYX_pndSZWVE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
