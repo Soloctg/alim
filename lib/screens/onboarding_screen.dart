@@ -10,16 +10,12 @@ class OnboardingScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(
-            child: Image.asset(
-              'assets/alimudoLogo.png',
-            ), // Add your image asset
-          ),
+          Expanded(child: Image.asset('assets/alimudoLogo.png')),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 30),
             child: Column(
               children: [
-                Text(
+                const Text(
                   'AlimUdo Farms',
                   textAlign: TextAlign.center,
                   style: TextStyle(
@@ -28,44 +24,69 @@ class OnboardingScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Text(
                   'Using Knowledge to feed Africa.',
                   textAlign: TextAlign.center,
-                  style: TextStyle(color: const Color.fromARGB(179, 236, 4, 4)),
+                  style: TextStyle(
+                    color: Color.fromARGB(179, 236, 4, 4),
+                    fontSize: 16,
+                  ),
                 ),
-                SizedBox(height: 30),
+                const SizedBox(height: 30),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFB54C),
+                    backgroundColor: const Color(0xFFFFB54C),
                     foregroundColor: Colors.white,
-                    shape: StadiumBorder(),
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    shape: const StadiumBorder(),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 40,
+                      vertical: 15,
+                    ),
                   ),
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/home');
                   },
-
-                  child: Text('Get Started'),
-                ),
-                SizedBox(height: 20),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFFFFB54C),
-                    foregroundColor: Colors.white,
-                    shape: StadiumBorder(),
-                    padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                  ),
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/register');
-                  },
-
-                  child: Text('Register'),
+                  child: const Text('Get Started'),
                 ),
               ],
             ),
           ),
-          SizedBox(height: 40),
+          const SizedBox(height: 30),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 30),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text("Don't have an account? "),
+                GestureDetector(
+                  onTap:
+                      () =>
+                          Navigator.pushReplacementNamed(context, '/register'),
+                  child: const Text(
+                    "Register",
+                    style: TextStyle(
+                      color: Color(0xFFFFB54C),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                const Text("  |  "),
+                GestureDetector(
+                  onTap:
+                      () => Navigator.pushReplacementNamed(context, '/login'),
+                  child: const Text(
+                    "Login",
+                    style: TextStyle(
+                      color: Color(0xFFFFB54C),
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 40),
         ],
       ),
     );
