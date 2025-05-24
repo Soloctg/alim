@@ -88,6 +88,30 @@ class HomeScreen extends StatelessWidget {
               );
             },
           ),
+          PopupMenuButton<String>(
+            icon: const Icon(Icons.more_vert, color: Colors.white),
+            onSelected: (String value) {
+              switch (value) {
+                case 'settings':
+                  Navigator.pushNamed(context, '/settings');
+                  break;
+                case 'logout':
+                  Navigator.pushReplacementNamed(context, '/login');
+                  break;
+              }
+            },
+            itemBuilder:
+                (BuildContext context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem<String>(
+                    value: 'settings',
+                    child: Text('Settings'),
+                  ),
+                  const PopupMenuItem<String>(
+                    value: 'logout',
+                    child: Text('Logout'),
+                  ),
+                ],
+          ),
         ],
       ),
       body: SingleChildScrollView(
