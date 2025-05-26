@@ -1,6 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import '../models/product.dart';
+
+Future<void> saveOrder(
+  String location,
+  List<Product> items,
+  double total,
+) async {
+  final firestore = FirebaseFirestore.instance;
+
+  await firestore.collection('orders').add({
+    'location': location,
+    'total': total,
+    'timestamp': FieldValue.serverTimestamp(),
+    'items':
+        items
+            .map(
+              (item) => {
+                'name': item.name,
+                'price': item.price,
+                'image': item.image,
+              },
+            )
+            .toList(),
+  });
+}
 
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
