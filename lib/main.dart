@@ -7,10 +7,14 @@ import 'package:alim/screens/home_screen.dart';
 import 'package:alim/screens/onboarding_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:alim/models/cart_model.dart';
-//import 'firebase_options.dart'; // auto-generated
+import 'firebase_options.dart'; // auto-generated
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
-  //runApp(AlimApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => CartModel(),
@@ -70,18 +74,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/alimudoLogo.png', width: 120),
-            SizedBox(height: 20),
-            Text(
-              'AlimUdo Farms',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            SizedBox(height: 10),
-            CircularProgressIndicator(color: Colors.orange),
+            Image.asset('assets/welcome.png'),
+
+            CircularProgressIndicator(color: Colors.amberAccent),
           ],
         ),
       ),

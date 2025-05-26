@@ -10,9 +10,9 @@ class OnboardingScreen extends StatelessWidget {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child: Image.asset('assets/alimudoLogo.png')),
+          Expanded(child: Image.asset('assets/alimUdoFarms.png')),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 30),
+            padding: const EdgeInsets.symmetric(horizontal: 5),
             child: Column(
               children: [
                 const Text(
@@ -29,14 +29,15 @@ class OnboardingScreen extends StatelessWidget {
                   'Using Knowledge to feed Africa.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    color: Color.fromARGB(179, 236, 4, 4),
+                    color: Color.fromARGB(255, 15, 204, 21),
                     fontSize: 16,
                   ),
                 ),
                 const SizedBox(height: 30),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFFFFB54C),
+                    backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+                    //Color.fromRGBO(138, 78, 47, 1),
                     foregroundColor: Colors.white,
                     shape: const StadiumBorder(),
                     padding: const EdgeInsets.symmetric(

@@ -78,7 +78,12 @@ class CartScreen extends StatelessWidget {
                             ).clear(); // clear cart after checkout
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
+                            backgroundColor: const Color.fromRGBO(
+                              138,
+                              78,
+                              47,
+                              1,
+                            ),
                             foregroundColor: Colors.white,
                             padding: const EdgeInsets.symmetric(
                               horizontal: 20,

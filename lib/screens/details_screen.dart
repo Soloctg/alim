@@ -103,7 +103,8 @@ class DetailsScreen extends StatelessWidget {
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orange,
+                    backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+                    foregroundColor: Colors.white,
                   ),
                   child: const Text("Add to Cart"),
                 ),
