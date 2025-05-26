@@ -66,16 +66,11 @@ class CartScreen extends StatelessWidget {
                         ),
                         ElevatedButton(
                           onPressed: () {
-                            // Implement checkout logic here
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(content: Text("Order placed!")),
-                            );
-                            //cart.clear();
-                            // Clear the cart
-                            Provider.of<CartModel>(
-                              context,
-                              listen: false,
-                            ).clear(); // clear cart after checkout
+                            //Provider.of<CartModel>(
+                            //   context,
+                            //   listen: false,
+                            // ).clear();
+                            Navigator.pushNamed(context, '/checkout');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color.fromRGBO(
@@ -90,6 +85,7 @@ class CartScreen extends StatelessWidget {
                               vertical: 10,
                             ),
                           ),
+
                           child: const Text("Checkout"),
                         ),
                       ],

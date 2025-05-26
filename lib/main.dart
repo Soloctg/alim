@@ -1,6 +1,7 @@
 import 'package:alim/auth/login_screen.dart';
 import 'package:alim/auth/register_screen.dart';
 import 'package:alim/screens/cart_screen.dart';
+import 'package:alim/screens/checkout_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:alim/screens/details_screen.dart';
 import 'package:alim/screens/home_screen.dart';
@@ -45,6 +46,7 @@ class AlimApp extends StatelessWidget {
         '/cart': (context) => CartScreen(),
         '/login': (context) => const LoginScreen(),
         '/register': (context) => const RegisterScreen(),
+        '/checkout': (context) => const CheckoutScreen(),
       },
     );
   }
