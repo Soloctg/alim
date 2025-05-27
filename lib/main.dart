@@ -4,7 +4,7 @@ import 'package:alim/screens/cart_screen.dart';
 import 'package:alim/screens/checkout_screen.dart';
 import 'package:alim/screens/settings_screen.dart';
 import 'package:alim/screens/profile_screen.dart';
-//import 'package:alim/screens/helpfeedback_screen_screen.dart';
+import 'package:alim/screens/help_feedback_screen.dart';
 import 'package:alim/screens/order_history_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:alim/screens/details_screen.dart';
@@ -55,8 +55,7 @@ class AlimApp extends StatelessWidget {
 
         '/profile': (context) => const ProfileScreen(),
         '/orderHistory': (context) => const OrderHistoryScreen(),
-
-        //'/helpFeedback': (context) => const HelpFeedbackScreen(),
+        '/help': (context) => const HelpFeedbackScreen(),
       },
     );
   }
