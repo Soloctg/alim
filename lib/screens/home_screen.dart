@@ -1,11 +1,35 @@
 import 'package:alim/models/cart_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../widgets/product_card.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
+class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  String? userEmail;
+
+  @override
+  void initState() {
+    super.initState();
+
+    final user = FirebaseAuth.instance.currentUser;
+    final fullName = user?.displayName ?? 'Guest';
+    setState(() {
+      //userEmail = user?.email ?? 'Guest';
+      //userEmail = user?.displayName ?? 'Guest';
+      userEmail = fullName.split(' ').first;
+    });
+  }
+
+  // Sample categorized products
+  // In a real app, this data would likely come from a database or API
 
   final Map<String, List<Product>> categorizedProducts = {
     'Vegetables': [
@@ -96,20 +120,18 @@ class HomeScreen extends StatelessWidget {
                   Navigator.pushNamed(context, '/settings');
                   break;
                 case 'logout':
+                  FirebaseAuth.instance.signOut();
                   Navigator.pushReplacementNamed(context, '/login');
                   break;
               }
             },
             itemBuilder:
-                (BuildContext context) => <PopupMenuEntry<String>>[
-                  const PopupMenuItem<String>(
+                (BuildContext context) => const [
+                  PopupMenuItem<String>(
                     value: 'settings',
                     child: Text('Settings'),
                   ),
-                  const PopupMenuItem<String>(
-                    value: 'logout',
-                    child: Text('Logout'),
-                  ),
+                  PopupMenuItem<String>(value: 'logout', child: Text('Logout')),
                 ],
           ),
         ],
@@ -118,36 +140,46 @@ class HomeScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children:
-              categorizedProducts.entries.map((entry) {
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      entry.key,
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange[300],
-                      ),
+          children: [
+            Text(
+              'Hello, ${userEmail ?? 'User'}!',
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.w600,
+                color: Colors.white,
+              ),
+            ),
+            const SizedBox(height: 20),
+            ...categorizedProducts.entries.map((entry) {
+              return Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    entry.key,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.orange[300],
                     ),
-                    const SizedBox(height: 10),
-                    GridView.count(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 10,
-                      mainAxisSpacing: 10,
-                      childAspectRatio: 0.75,
-                      shrinkWrap: true,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children:
-                          entry.value
-                              .map((product) => ProductCard(product: product))
-                              .toList(),
-                    ),
-                    const SizedBox(height: 20),
-                  ],
-                );
-              }).toList(),
+                  ),
+                  const SizedBox(height: 10),
+                  GridView.count(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    childAspectRatio: 0.75,
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    children:
+                        entry.value
+                            .map((product) => ProductCard(product: product))
+                            .toList(),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              );
+            }).toList(),
+          ],
         ),
       ),
     );
