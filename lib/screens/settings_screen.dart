@@ -20,7 +20,7 @@ class SettingsScreen extends StatelessWidget {
             leading: const Icon(Icons.person, color: Colors.brown),
             title: const Text("Profile"),
             onTap: () {
-              // Navigator.pushNamed(context, '/profile');
+              Navigator.pushNamed(context, '/profile');
             },
           ),
           const Divider(),
