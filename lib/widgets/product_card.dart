@@ -34,9 +34,10 @@ class ProductCard extends StatelessWidget {
                     product.image,
                     fit: BoxFit.cover,
                     width: double.infinity,
-                    height: 120,
+                    height: 150,
                   ),
                 ),
+                const SizedBox(height: 8),
                 // Content section
                 Expanded(
                   child: Padding(
