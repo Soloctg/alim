@@ -26,7 +26,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
         // Create user
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
-              //name: _nameController.text.trim(),
               email: _emailController.text.trim(),
               password: _passwordController.text.trim(),
             );
@@ -47,10 +46,29 @@ class _RegisterScreenState extends State<RegisterScreen> {
           const SnackBar(content: Text("Registration successful")),
         );
         Navigator.pushReplacementNamed(context, '/login');
-      } catch (e) {
+      } on FirebaseAuthException catch (e) {
+        String message;
+        switch (e.code) {
+          case 'email-already-in-use':
+            message = 'This email is already registered.';
+            break;
+          case 'invalid-email':
+            message = 'The email address is not valid.';
+            break;
+          case 'weak-password':
+            message = 'The password is too weak.';
+            break;
+          default:
+            message = 'Registration failed: ${e.message}';
+        }
+
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+        ).showSnackBar(SnackBar(content: Text(message)));
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text("Unexpected error: ${e.toString()}")),
+        );
       } finally {
         setState(() => _isLoading = false);
       }
@@ -104,7 +122,16 @@ class _RegisterScreenState extends State<RegisterScreen> {
                   labelStyle: TextStyle(color: Colors.white),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value!.isEmpty ? "Enter email" : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Enter email";
+                  }
+                  final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                  if (!emailRegex.hasMatch(value)) {
+                    return "Enter a valid email";
+                  }
+                  return null;
+                },
               ),
               const SizedBox(height: 12),
               TextFormField(
