@@ -12,9 +12,12 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  bool _isLoading = false;
 
   Future<void> _login() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
+
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: _emailController.text.trim(),
@@ -30,12 +33,16 @@ class _LoginScreenState extends State<LoginScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(content: Text("Login failed: ${e.toString()}")),
         );
+      } finally {
+        setState(() => _isLoading = false);
       }
     }
   }
 
   void _resetPassword() async {
-    if (_emailController.text.trim().isEmpty) {
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text("Please enter your email to reset password"),
@@ -45,9 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
 
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(
-        email: _emailController.text.trim(),
-      );
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Password reset email sent")),
       );
@@ -63,8 +68,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(40, 40, 40, 1),
       appBar: AppBar(
-        title: const Text("Login"),
-        backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+        backgroundColor: const Color.fromRGBO(40, 40, 40, 1),
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -97,12 +101,12 @@ class _LoginScreenState extends State<LoginScreen> {
                     const SizedBox(height: 20),
                     TextFormField(
                       controller: _emailController,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         labelText: "Email",
                         labelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
                       ),
-                      style: const TextStyle(color: Colors.white),
                       validator:
                           (value) => value!.isEmpty ? "Enter your email" : null,
                     ),
@@ -110,24 +114,29 @@ class _LoginScreenState extends State<LoginScreen> {
                     TextFormField(
                       controller: _passwordController,
                       obscureText: true,
+                      style: const TextStyle(color: Colors.white),
                       decoration: const InputDecoration(
                         labelText: "Password",
                         labelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
                       ),
-                      style: const TextStyle(color: Colors.white),
                       validator:
                           (value) =>
                               value!.isEmpty ? "Enter your password" : null,
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton(
-                      onPressed: _login,
+                      onPressed: _isLoading ? null : _login,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
                         foregroundColor: Colors.white,
                       ),
-                      child: const Text("Login"),
+                      child:
+                          _isLoading
+                              ? const CircularProgressIndicator(
+                                color: Colors.white,
+                              )
+                              : const Text("Login"),
                     ),
                   ],
                 ),

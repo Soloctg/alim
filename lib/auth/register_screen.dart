@@ -9,8 +9,11 @@ class RegisterScreen extends StatefulWidget {
   State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
+bool _isLoading = false;
+
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -18,10 +21,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
 
   Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
+      setState(() => _isLoading = true);
       try {
         // Create user
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(
+              //name: _nameController.text.trim(),
               email: _emailController.text.trim(),
               password: _passwordController.text.trim(),
             );
@@ -31,6 +36,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
             .collection('users')
             .doc(userCredential.user!.uid)
             .set({
+              'name': _nameController.text.trim(),
               'email': _emailController.text.trim(),
               'phone': _phoneController.text.trim(),
               'address': _addressController.text.trim(),
@@ -45,6 +51,8 @@ class _RegisterScreenState extends State<RegisterScreen> {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+      } finally {
+        setState(() => _isLoading = false);
       }
     }
   }
@@ -54,8 +62,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     return Scaffold(
       backgroundColor: const Color.fromRGBO(40, 40, 40, 1),
       appBar: AppBar(
-        title: const Text("Register"),
-        backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+        backgroundColor: const Color.fromRGBO(40, 40, 40, 1),
         foregroundColor: Colors.white,
       ),
       body: Padding(
@@ -78,6 +85,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 style: TextStyle(color: Colors.white70),
               ),
               const SizedBox(height: 24),
+              TextFormField(
+                controller: _nameController,
+                style: const TextStyle(color: Colors.white),
+                decoration: const InputDecoration(
+                  labelText: "Name",
+                  labelStyle: TextStyle(color: Colors.white),
+                  border: OutlineInputBorder(),
+                ),
+                validator: (value) => value!.isEmpty ? "Enter your name" : null,
+              ),
+              const SizedBox(height: 12),
               TextFormField(
                 controller: _emailController,
                 style: const TextStyle(color: Colors.white),
@@ -126,16 +144,22 @@ class _RegisterScreenState extends State<RegisterScreen> {
                 validator: (value) => value!.isEmpty ? "Enter address" : null,
               ),
               const SizedBox(height: 20),
+
               ElevatedButton(
-                onPressed: _register,
-                child: const Text("Register"),
+                onPressed: _isLoading ? null : _register,
+                //onPressed: _register,
+                //child: const Text("Register"),
+                child:
+                    _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text("Register"),
               ),
 
               TextButton(
                 onPressed:
                     () => Navigator.pushReplacementNamed(context, '/login'),
-                child: const Text("Already have an account? Login"),
                 style: TextButton.styleFrom(foregroundColor: Colors.white),
+                child: const Text("Already have an account? Login"),
               ),
             ],
           ),
