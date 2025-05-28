@@ -27,11 +27,32 @@ class _LoginScreenState extends State<LoginScreen> {
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(const SnackBar(content: Text("Login successful")));
-
         Navigator.pushReplacementNamed(context, '/home');
+      } on FirebaseAuthException catch (e) {
+        String message;
+        switch (e.code) {
+          case 'user-not-found':
+            message = 'No user found with this email.';
+            break;
+          case 'wrong-password':
+            message = 'Incorrect password. Try again.';
+            break;
+          case 'invalid-email':
+            message = 'The email address is not valid.';
+            break;
+          case 'user-disabled':
+            message = 'This account has been disabled.';
+            break;
+          default:
+            message = 'Login failed: ${e.message}';
+        }
+
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(message)));
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Login failed: ${e.toString()}")),
+          SnackBar(content: Text("Unexpected error: ${e.toString()}")),
         );
       } finally {
         setState(() => _isLoading = false);
@@ -107,8 +128,20 @@ class _LoginScreenState extends State<LoginScreen> {
                         labelStyle: TextStyle(color: Colors.white),
                         border: OutlineInputBorder(),
                       ),
-                      validator:
-                          (value) => value!.isEmpty ? "Enter your email" : null,
+                      //validator:
+                      //   (value) => value!.isEmpty ? "Enter your email" : null,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Enter your email";
+                        }
+
+                        final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+');
+                        if (!emailRegex.hasMatch(value)) {
+                          return "Enter a valid email";
+                        }
+
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 12),
                     TextFormField(
