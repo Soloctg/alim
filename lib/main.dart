@@ -52,7 +52,6 @@ class AlimApp extends StatelessWidget {
         '/register': (context) => const RegisterScreen(),
         '/checkout': (context) => const CheckoutScreen(),
         '/settings': (context) => const SettingsScreen(),
-
         '/profile': (context) => const ProfileScreen(),
         '/orderHistory': (context) => const OrderHistoryScreen(),
         '/help': (context) => const HelpFeedbackScreen(),

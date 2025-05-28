@@ -34,6 +34,30 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  void _resetPassword() async {
+    if (_emailController.text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Please enter your email to reset password"),
+        ),
+      );
+      return;
+    }
+
+    try {
+      await FirebaseAuth.instance.sendPasswordResetEmail(
+        email: _emailController.text.trim(),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Password reset email sent")),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error: ${e.toString()}")));
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,56 +71,74 @@ class _LoginScreenState extends State<LoginScreen> {
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          child: ListView(
+          child: Column(
             children: [
-              const Text(
-                "Welcome back",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              Expanded(
+                child: ListView(
+                  children: [
+                    Image.asset('assets/welcome.png', height: 120),
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Welcome back",
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const Text(
+                      "Login to your account",
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: const InputDecoration(
+                        labelText: "Email",
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator:
+                          (value) => value!.isEmpty ? "Enter your email" : null,
+                    ),
+                    const SizedBox(height: 12),
+                    TextFormField(
+                      controller: _passwordController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        labelText: "Password",
+                        labelStyle: TextStyle(color: Colors.white),
+                        border: OutlineInputBorder(),
+                      ),
+                      style: const TextStyle(color: Colors.white),
+                      validator:
+                          (value) =>
+                              value!.isEmpty ? "Enter your password" : null,
+                    ),
+                    const SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: _login,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+                        foregroundColor: Colors.white,
+                      ),
+                      child: const Text("Login"),
+                    ),
+                  ],
                 ),
               ),
-              const Text(
-                "Login to your account",
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+              const SizedBox(height: 16),
+              TextButton(
+                onPressed: _resetPassword,
+                child: const Text(
+                  "Forgot Password?",
+                  style: TextStyle(color: Colors.white),
                 ),
-              ),
-              const SizedBox(height: 20),
-              Image.asset('assets/alimudoLogo.png', height: 120),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _emailController,
-                decoration: const InputDecoration(
-                  labelText: "Email",
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator:
-                    (value) => value!.isEmpty ? "Enter your email" : null,
-              ),
-              const SizedBox(height: 12),
-              TextFormField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(
-                  labelText: "Password",
-                  labelStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(),
-                ),
-                style: const TextStyle(color: Colors.white),
-                validator:
-                    (value) => value!.isEmpty ? "Enter your password" : null,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: _login,
-                style: ElevatedButton.styleFrom(backgroundColor: Colors.green),
-                child: const Text("Login"),
               ),
               TextButton(
                 onPressed:
