@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/product.dart';
 import '../widgets/product_card.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:developer';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,20 +15,49 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  String? userEmail;
+  //String? userEmail;
+  String? userName;
 
   @override
   void initState() {
     super.initState();
-
-    final user = FirebaseAuth.instance.currentUser;
-    final fullName = user?.displayName ?? 'Guest';
-    setState(() {
-      //userEmail = user?.email ?? 'Guest';
-      //userEmail = user?.displayName ?? 'Guest';
-      userEmail = fullName.split(' ').first;
-    });
+    _fetchUserName();
   }
+
+  Future<void> _fetchUserName() async {
+    try {
+      final user = FirebaseAuth.instance.currentUser;
+      if (user != null) {
+        final doc =
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(user.uid)
+                .get();
+
+        if (doc.exists) {
+          setState(() {
+            userName = doc.data()?['name'];
+          });
+        }
+      }
+    } catch (e) {
+      //print("Error fetching user name: $e");
+      log('Error fetching user name', error: e);
+    }
+  }
+
+  //@override
+  //void initState() {
+  //  super.initState();
+
+  //  final user = FirebaseAuth.instance.currentUser;
+  //  final fullName = user?.displayName ?? 'Guest';
+  //  setState(() {
+  //userEmail = user?.email ?? 'Guest';
+  //userEmail = user?.displayName ?? 'Guest';
+  //    userName = fullName.split(' ').first;
+  //  });
+  //}
 
   // Sample categorized products
   // In a real app, this data would likely come from a database or API
@@ -136,13 +167,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
+      //backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //
             Text(
-              'Hello, ${userEmail ?? 'User'}!',
+              //'Hello, ${userName ?? 'User'}!',
+              userName != null ? 'Hello, $userName!' : 'Loading...',
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.w600,
