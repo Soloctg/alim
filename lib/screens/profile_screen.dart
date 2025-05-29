@@ -17,6 +17,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String? phone;
   String? address;
 
+  final TextEditingController nameController = TextEditingController();
+  final TextEditingController phoneController = TextEditingController();
+  final TextEditingController addressController = TextEditingController();
+
   @override
   void initState() {
     super.initState();
@@ -41,12 +45,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
             userName = doc.data()?['name'] ?? user!.displayName;
             address = data?['address'] ?? 'No address available';
             phone = data?['phone'] ?? user!.phoneNumber ?? 'No phone number';
+
+            nameController.text = userName ?? '';
+            phoneController.text = phone ?? '';
+            addressController.text = address ?? '';
           });
         } else {
           setState(() {
             userName = user!.displayName;
             address = 'No address available';
             phone = user!.phoneNumber ?? 'No phone number';
+
+            nameController.text = userName ?? '';
+            phoneController.text = phone ?? '';
+            addressController.text = address ?? '';
           });
         }
       } catch (error) {
@@ -55,8 +67,30 @@ class _ProfileScreenState extends State<ProfileScreen> {
           userName = user!.displayName;
           address = 'Error loading address';
           phone = user!.phoneNumber ?? 'Error loading phone number';
+
+          nameController.text = userName ?? '';
+          phoneController.text = phone ?? '';
+          addressController.text = address ?? '';
         });
       }
+    }
+  }
+
+  Future<void> _saveProfile() async {
+    if (user == null) return;
+    try {
+      await FirebaseFirestore.instance.collection('users').doc(user!.uid).set({
+        'name': nameController.text,
+        'phone': phoneController.text,
+        'address': addressController.text,
+      }, SetOptions(merge: true));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully!')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to update profile: $e')));
     }
   }
 
@@ -78,30 +112,77 @@ class _ProfileScreenState extends State<ProfileScreen> {
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+
           children: [
             const Text(
-              "Account Information",
+              "Edit Account Information",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 16),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: Text(userName ?? "Loading..."),
-            ),
-            ListTile(
-              leading: const Icon(Icons.phone),
-              title: Text(phone ?? "No phone number available"),
+            TextField(
+              controller: nameController,
+              decoration: const InputDecoration(
+                labelText: "Name",
+                prefixIcon: Icon(Icons.person),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  userName = value;
+                });
+              },
             ),
 
-            ListTile(
-              leading: const Icon(Icons.location_on),
-              title: Text(address ?? "No address available"),
+            const SizedBox(height: 16),
+            TextField(
+              controller: phoneController,
+              decoration: const InputDecoration(
+                labelText: "Phone Number",
+                prefixIcon: Icon(Icons.phone),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  phone = value;
+                });
+              },
+            ),
+
+            const SizedBox(height: 16),
+            TextField(
+              controller: addressController,
+              decoration: const InputDecoration(
+                labelText: "Address",
+                prefixIcon: Icon(Icons.location_on),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  address = value;
+                });
+              },
+            ),
+            const SizedBox(height: 16),
+            // Display user email
+            const Text(
+              "Email",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
             ),
             ListTile(
               leading: const Icon(Icons.email),
               title: Text(user?.email ?? "No email available"),
             ),
-            const Spacer(),
+
+            const SizedBox(height: 24),
+            // Save button
+            Center(
+              child: ElevatedButton(
+                onPressed: _saveProfile,
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+                  foregroundColor: Colors.white,
+                ),
+                child: const Text("Save Changes"),
+              ),
+            ),
+            Spacer(),
             Center(
               child: ElevatedButton.icon(
                 onPressed: () async {
