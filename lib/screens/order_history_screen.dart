@@ -15,6 +15,14 @@ class OrderHistoryScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
         foregroundColor: Colors.white,
       ),
+      //backgroundColor: const Color.fromARGB(255, 241, 241, 241),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/home');
+        },
+        backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+        child: const Icon(Icons.home, color: Colors.white),
+      ),
       body:
           currentUser == null
               ? const Center(child: Text("Please login to view your orders."))
