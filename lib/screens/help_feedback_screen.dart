@@ -29,8 +29,9 @@ class _HelpFeedbackScreenState extends State<HelpFeedbackScreen> {
         backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
         foregroundColor: Colors.white,
       ),
-      body: Padding(
+      body: Container(
         padding: const EdgeInsets.all(16.0),
+        color: Colors.white,
         child: ListView(
           children: [
             const Text(
