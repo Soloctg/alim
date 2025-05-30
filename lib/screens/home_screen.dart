@@ -168,6 +168,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ],
       ),
       //backgroundColor: Colors.white,
+      backgroundColor: const Color(0xFF2E2E2E),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
 
