@@ -59,6 +59,9 @@ class _CartScreenState extends State<CartScreen> {
         'total': cart.totalPrice,
         'location': location,
         'timestamp': FieldValue.serverTimestamp(),
+        // 'status': 'pending', // You can set initial status
+        'userId': user?.uid ?? 'anonymous',
+        'userEmail': user?.email ?? 'no email',
       });
 
       cart.clear();

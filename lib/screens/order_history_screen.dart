@@ -51,11 +51,17 @@ class OrderHistoryScreen extends StatelessWidget {
                     itemCount: snapshot.data!.docs.length,
                     itemBuilder: (context, index) {
                       final order = snapshot.data!.docs[index];
-                      final total = order['total'];
-                      final location = order['deliveryLocation'];
-                      final timestamp = order['timestamp']?.toDate();
 
-                      final productList = List.from(order['products']);
+                      final email = order['userEmail'];
+                      final userId = order['userId'];
+                      if (email != currentUser.email ||
+                          userId != currentUser.uid) {
+                        return const SizedBox.shrink(); // Skip orders not belonging to the current user
+                      }
+                      final total = order['total'];
+                      final location = order['location'];
+                      final timestamp = order['timestamp']?.toDate();
+                      final productList = List.from(order['items']);
 
                       return Card(
                         color: Colors.white,
@@ -72,7 +78,7 @@ class OrderHistoryScreen extends StatelessWidget {
                             style: const TextStyle(fontWeight: FontWeight.bold),
                           ),
                           subtitle: Text(
-                            'Delivered to: $location\n${timestamp != null ? timestamp.toString().substring(0, 19) : ''}',
+                            'Delivered to: $location\nEmail: $email\n${timestamp != null ? timestamp.toString().substring(0, 19) : ''}',
                             style: const TextStyle(fontSize: 12),
                           ),
                           children:
