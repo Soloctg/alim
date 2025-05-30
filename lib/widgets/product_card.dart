@@ -26,7 +26,6 @@ class ProductCard extends StatelessWidget {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
-
               child: Image.asset(
                 product.image,
                 fit: BoxFit.cover,
@@ -36,32 +35,39 @@ class ProductCard extends StatelessWidget {
             ),
             const SizedBox(height: 8),
 
-            // Name & Price
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                product.name,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+            // Expanded details section
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // Name
+                    Text(
+                      product.name,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    // Price
+                    Text(
+                      '\$${product.price.toStringAsFixed(2)}',
+                      style: const TextStyle(
+                        fontSize: 14,
+                        color: Color.fromARGB(255, 10, 148, 15),
+                      ),
+                    ),
+                    const Spacer(), // Pushes the button to the bottom
+                  ],
                 ),
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
               ),
             ),
-            const SizedBox(height: 4),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                '\$${product.price.toStringAsFixed(2)}',
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Color.fromARGB(255, 10, 148, 15),
-                ),
-              ),
-            ),
-            const Spacer(), // pushes button to bottom
+
             // Add to Cart Button
             Padding(
               padding: const EdgeInsets.all(5),
