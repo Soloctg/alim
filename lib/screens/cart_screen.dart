@@ -42,7 +42,8 @@ class _CartScreenState extends State<CartScreen> {
 
     try {
       await FirebaseFirestore.instance.collection('orders').add({
-        'userId': user.uid,
+        //'userId': user.uid,
+        'userId': FirebaseAuth.instance.currentUser!.uid,
         'userEmail': user.email ?? '',
         'userPhone': user.phoneNumber ?? '',
         'items':
