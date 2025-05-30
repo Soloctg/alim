@@ -26,6 +26,7 @@ class ProductCard extends StatelessWidget {
                 topLeft: Radius.circular(12),
                 topRight: Radius.circular(12),
               ),
+
               child: Image.asset(
                 product.image,
                 fit: BoxFit.cover,
@@ -78,7 +79,7 @@ class ProductCard extends StatelessWidget {
                     foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 6),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(10),
                     ),
                   ),
                   child: const Text("Add to Cart"),

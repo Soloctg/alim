@@ -170,6 +170,7 @@ class _HomeScreenState extends State<HomeScreen> {
       //backgroundColor: Colors.white,
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
+
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -197,6 +198,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                   const SizedBox(height: 10),
+
                   GridView.count(
                     crossAxisCount: 2,
                     crossAxisSpacing: 10,

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../models/cart_model.dart';
@@ -17,10 +18,20 @@ class _CartScreenState extends State<CartScreen> {
   Future<void> _checkout(BuildContext context) async {
     final cart = Provider.of<CartModel>(context, listen: false);
     final location = _locationController.text.trim();
+    final user = FirebaseAuth.instance.currentUser;
 
     if (location.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please enter delivery location")),
+      );
+      return;
+    }
+
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("You must be logged in to place an order"),
+        ),
       );
       return;
     }
@@ -31,6 +42,9 @@ class _CartScreenState extends State<CartScreen> {
 
     try {
       await FirebaseFirestore.instance.collection('orders').add({
+        'userId': user.uid,
+        'userEmail': user.email ?? '',
+        'userPhone': user.phoneNumber ?? '',
         'items':
             cart.items
                 .map(
