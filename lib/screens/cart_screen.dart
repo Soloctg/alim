@@ -88,17 +88,36 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
         foregroundColor: Colors.white,
       ),
+
       body:
           cart.items.isEmpty
-              ? const Center(
-                child: Text(
-                  "Your cart is empty!",
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18,
-                  ),
+              ? Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const Text(
+                      "Your cart is empty!",
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    FloatingActionButton.extended(
+                      backgroundColor: const Color.fromRGBO(138, 78, 47, 1),
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/home');
+                      },
+                      icon: const Icon(Icons.home),
+                      label: const Text("Go to Home"),
+                    ),
+                  ],
                 ),
               )
               : Column(
